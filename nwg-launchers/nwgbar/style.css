@@ -1,0 +1,31 @@
+#bar {
+    margin: 30px; /* affects top/bottom & left/right alignment */
+    font-size: 16px;
+    font-family: Product Sans;
+}
+
+button, image {
+    background: none;
+    border-style: none;
+    box-shadow: none;
+    color:#eceff4;
+}
+
+button {
+    padding: 1.2rem 1.5rem;
+    margin: 5px;
+    border-radius: 3rem;
+}
+
+button:focus {
+    background: rgba(94,129,172,0.3);
+}
+
+grid {
+    background-color: rgba(46,52,64, 0.3);
+    border-radius: 3rem;
+    padding: 5px;
+    box-shadow: 0 0 5px black;
+    /* e.g. for common background to all buttons */
+}
+

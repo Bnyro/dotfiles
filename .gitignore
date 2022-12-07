@@ -12,6 +12,8 @@
 !hypr/**
 !mako/
 !mako/**
+!nwg-launchers/
+!nwg-launchers/**
 !sway/
 !sway/**
 !swaylock/
