@@ -52,11 +52,11 @@
     },
     "cpu": {
         "format": "﬙ {usage: >3}%",
-        "on-click": "alacritty -e htop"
+        "on-click": "alacritty -e btm"
     },
     "memory": {
         "format": " {: >3}%",
-        "on-click": "alacritty -e htop"
+        "on-click": "alacritty -e btm"
     },
     "temperature": {
         // "thermal-zone": 2,

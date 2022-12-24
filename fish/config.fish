@@ -3,6 +3,7 @@ alias df="duf /"
 set fish_greeting
 bfetch
 starship init fish | source
+zoxide init fish | source
 
 function mkcd
     mkdir "$argv[1]"
