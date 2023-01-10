@@ -1,139 +1,111 @@
 {
-    "layer": "top", // Waybar at top layer
-    "position": "top", // Waybar position (top|bottom|left|right)
-    "height": 30,
-    //"width": 1350, // Waybar width
-    // Choose the order of the modules idle_inhibitor
-    "modules-left": ["sway/workspaces", "sway/mode", "sway/window"],
-    "modules-right": ["custom/pacman", "backlight", "custom/keyboard-layout", "cpu", "memory", "battery", "network", "clock","custom/power"], 
-    
- // Modules configuration
- 
-    "sway/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": true,
-        "format": "{icon}",
-        "format-icons": {
-		"3": "3",
-		"4": "4",
-		"5": "5",
-		"6": "6",
-		"7": "7",
-		"8": "8",
-		"9": "9",
-		"10": "10",
-        }
+  "modules-left": [
+    "custom/launcher",
+    "sway/workspaces",
+    "temperature",
+    "idle_inhibitor",
+  ],
+  "modules-center": [
+    "clock"
+  ],
+  "modules-right": [
+    "pulseaudio",
+    "backlight",
+    "memory",
+    "cpu",
+    "network",
+    "battery",
+    "custom/powermenu",
+    "tray"
+  ],
+  "custom/launcher": {
+    "format": " ",
+    "on-click": "~/.config/rofi/launcher.sh",
+    "tooltip": false
+  },
+  "sway/workspaces": {
+    "disable-scroll": true,
+  },
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": ""
     },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
+    "tooltip": false
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "on-scroll-up": "light -A 5",
+    "on-scroll-down": "light -U 5",
+    "format": "{icon} {percent}%",
+    "format-icons": ["","","",""]
+  },
+  "pulseaudio": {
+    "scroll-step": 1,
+    "format": "{icon} {volume}%", 
+    "format-muted": "婢 Muted",
+    "format-icons": {
+      "default": ["", "", ""]
     },
-    "sway/window": {
-        "format": "{}"
+    "states": {
+      "warning": 85,
     },
-    "idle_inhibitor": {
-        "format": "{icon}",
-       "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
+    "scroll-step": 1,
+    "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "tooltip": false,
+  },
+  "battery": {
+    "interval": 10,
+    "states": {
+      "warning": 20,
+      "critical": 10
     },
-    "tray": {
-        "icon-size": 14,
-        "spacing": 5
+    "format": "{icon} {capacity}%",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "format-full": "{icon} {capacity}%",
+    "format-charging": " {capacity}%",
+    "tooltip": false
+  },
+  "clock": {
+    "interval": 1,
+    "format": "{:%I:%M %p  %A %b %d}",
+    "tooltip": true,
+    /* "tooltip-format": "{:%A, %d %B %Y}\n<tt>{calendar}</tt>" */
+    "tooltip-format": "上午：高数\n下午：Ps\n晚上：Golang\n<tt>{calendar}</tt>",
+  },
+  "memory": {
+    "interval": 1,
+    "format": "﬙ {percentage}%",
+    "states": {
+      "warning": 85,
     },
-    "clock": {
-        "tooltip-format": "{:%A %B %d %Y | %H:%M}",
-        "format": " {:%a %d %b  %I:%M %p}",	//12 hour format
-        //"format": " {:%a %d %b  %H:%M}",	//24 hour format
-        "format-alt": " {:%d/%m/%Y  %H:%M:%S}",
-        //"timezones": [ "Kolkata" ],
-        //"max-length": 200
-        "interval": 1
-    },
-    "cpu": {
-        "format": "﬙ {usage: >3}%",
-        "on-click": "alacritty -e btm"
-    },
-    "memory": {
-        "format": " {: >3}%",
-        "on-click": "alacritty -e btm"
-    },
-    "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
-        // "format-critical": "{temperatureC}°C ",
-        "format": "{temperatureC}°C "
-    },
-    "backlight": {
-        // "device": "acpi_video1",
-        "format": "{icon} {percent: >3}%",
-        "format-icons": ["", ""],
-        "on-scroll-down": "brightnessctl -c backlight set 5%-",
-        "on-scroll-up": "brightnessctl -c backlight set +5%"
-    },
-    "battery": {
-        "states": {
-            // "good": 95,
-            "warning": 30,
-            "critical": 15
-        },       
-        "format": "{icon} {capacity: >3}%",
-        // "format-good": "", // An empty format will hide the module
-        // "format-full": "",
-        "format-icons": ["", "", "", "", ""]
-        //"format-icons": ["", "", "", "", "", "", "", "", "", ""]
-    },
-     "network": {
-        // "interface": "wlp2s0", // (Optional) To force the use of this interface
-        "format": "⚠ Disabled",
-        "format-wifi": " {essid}",
-        "format-ethernet": " {ifname}: {ipaddr}/{cidr}",
-        "format-disconnected": "⚠ Disconnected",
-        "on-click": "alacritty -e nmtui"
-    },
-    "pulseaudio": {
-        "scroll-step": 5,
-        "format": "{icon} {volume: >3}%",
-        "format-bluetooth": "{icon} {volume: >3}%",
-        "format-muted":" muted",
-        "format-icons": {
-            "headphones": "",
-            "handsfree": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", ""]
-        },
-        "on-click": "pavucontrol"
-    },
-     "custom/pacman": {
-        "format": " {}",
-        "interval": 7200,                     // every two hours
-        "exec": "checkupdates | wc -l",       // # of updates and tooltip details
-        "exec-if": "exit 0",                  // always run; consider advanced run conditions
-        "on-click": "alacritty -e bnyro update", // update system
-        "signal": 8
-    },
-    "custom/power": {
-      	"format":"⏻",
-       	"on-click": "nwgbar",
-      	"tooltip": false,
-   },
-   "custom/keyboard-layout": {
-      	"exec": "swaymsg -t get_inputs | grep -m1 'xkb_active_layout_name' | cut -d '\"' -f4",
-      	// Interval set only as a fallback, as the value is updated by signal
-      	"interval": 30,
-      	"format": "  {}", // Icon: keyboard
-      	// Signal sent by Sway key binding (~/.config/sway/key-bindings)
-      	"signal": 1, // SIGHUP
-      	"tooltip": false,
-        "on-click": "~/.config/waybar/scripts/keyhint.sh",
-},
-     "custom/launcher": {
-    	"format":" ",
-    	"on-click": "exec nwg-drawer -c 7 -is 70 -spacing 23",
-    	"tooltip": false,
-},
+  },
+  "cpu": {
+    "interval": 1,
+    "format": " {usage}%"
+  },
+  "network": {
+    "interval": 1,
+    "format-wifi": "說 {essid}",
+    "format-ethernet": "  {ifname} ({ipaddr})",
+    "format-linked": "說 {essid} (No IP)",
+    "format-disconnected": "說 Disconnected",
+    "tooltip": false
+  },
+  "temperature": {
+    "hwmon-path": "",
+    //"critical-threshold": 80,
+    "tooltip": false,
+    "format": " {temperatureC}°C"
+  },
+  "custom/powermenu": {
+    "format": "",
+    "on-click": "~/.config/rofi/powermenu.sh",
+    "tooltip": false
+  },
+  "tray": {
+    "icon-size": 15,
+    "spacing": 5
+  },
 }
