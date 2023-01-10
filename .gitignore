@@ -22,3 +22,13 @@
 !waybar/**
 !wofi/
 !wofi/**
+!rofi/
+!rofi/**
+!kitty/
+!kitty/**
+!ranger/
+!ranger/**
+!dunst/
+!dunst/**
+!dunst/
+!dunst/**
