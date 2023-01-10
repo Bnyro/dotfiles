@@ -206,7 +206,7 @@ smart_borders on
 
 
     # Kill focused window
-    bindsym $mod+Shift+q kill
+    bindsym $mod+q kill
 
     # Start your launcher
     bindsym $mod+d exec ~/.config/rofi/launcher.sh
