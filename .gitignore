@@ -18,7 +18,5 @@
 !waybar/**
 !rofi/
 !rofi/**
-!kitty/
-!kitty/**
 !ranger/
 !ranger/**
