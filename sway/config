@@ -117,7 +117,7 @@ smart_borders on
 #----------------------------------#
 # Your preferred terminal emulator #
 #----------------------------------#
-    set $term kitty
+    set $term alacritty
     
 #-------------------------------------#
 # Your preferred application launcher #
@@ -192,9 +192,9 @@ smart_borders on
 #----------------#
     # Start a terminal
     bindsym $mod+Return exec $term
-    bindsym $mod+Shift+Return exec kitty --class="termfloat"
-    bindsym $mod+Shift+m exec kitty --class="musicfox" --hold sh -c "musicfox"
-    bindsym $mod+Shift+d exec kitty --class="danmufloat" --hold sh -c "cd /home/ruixi/Codelearning/go/src/bilibili_live_tui/  && export TERM=xterm-256color && ./main" 
+    bindsym $mod+Shift+Return exec $term --class="termfloat"
+    bindsym $mod+Shift+m exec $term --class="musicfox" --hold sh -c "musicfox"
+    bindsym $mod+Shift+d exec $term --class="danmufloat" --hold sh -c "cd /home/ruixi/Codelearning/go/src/bilibili_live_tui/  && export TERM=xterm-256color && ./main" 
 
 
     # quick start some applications
