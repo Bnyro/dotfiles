@@ -14,8 +14,6 @@
 !mako/**
 !sway/
 !sway/**
-!swaylock/
-!swaylock/**
 !waybar/
 !waybar/**
 !rofi/
