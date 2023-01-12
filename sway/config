@@ -67,7 +67,7 @@ smart_borders on
 #---------------------#
 # Focus follows mouse #
 #---------------------#
-    focus_follows_mouse no
+    focus_follows_mouse yes
 
 #-----------#
 # Autostart #
@@ -193,9 +193,6 @@ smart_borders on
     # Start a terminal
     bindsym $mod+Return exec $term
     bindsym $mod+Shift+Return exec $term --class="termfloat"
-    bindsym $mod+Shift+m exec $term --class="musicfox" --hold sh -c "musicfox"
-    bindsym $mod+Shift+d exec $term --class="danmufloat" --hold sh -c "cd /home/ruixi/Codelearning/go/src/bilibili_live_tui/  && export TERM=xterm-256color && ./main" 
-
 
     # quick start some applications
     bindsym $mod+o exec --no-startup-id              librewolf
