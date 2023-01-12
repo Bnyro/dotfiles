@@ -199,11 +199,9 @@ smart_borders on
 
     # quick start some applications
     bindsym $mod+o exec --no-startup-id              librewolf
-    bindsym $mod+Shift+x exec --no-startup-id        ~/.config/sway/swaylock.sh
-    bindsym $mod+bracketleft  exec --no-startup-id   grimshot --notify  save area ~/Pictures/$(date "+%Y-%m-%d"T"%H:%M:%S_no_watermark").png
-    bindsym $mod+bracketright exec --no-startup-id   grimshot --notify  copy area 
-    bindsym $mod+a exec --no-startup-id             ~/.config/sway/grimshot_watermark.sh
 
+    # lock the screen
+    bindsym $mod+Shift+x exec --no-startup-id        ~/.config/sway/swaylock.sh
 
     # Kill focused window
     bindsym $mod+q kill
