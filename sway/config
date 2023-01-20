@@ -180,7 +180,7 @@ smart_borders on
 #---------------------#
     # You can get the names of your inputs by running: swaymsg -t get_inputs
     # Read `man 5 sway-input` for more information about this section.
-    input "1739:52781:MSFT0001:01_06CB:CE2D_Touchpad" {
+    input "type:touchpad" {
            dwt enabled
            tap enabled
            natural_scroll enabled
