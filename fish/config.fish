@@ -1,4 +1,4 @@
-alias ls="exa -TlaL 2 --icons"
+alias ls="exa --long --all --tree --level=1 --icons"
 alias df="duf /"
 set fish_greeting
 bfetch
