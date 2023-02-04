@@ -1,5 +1,6 @@
 alias ls="exa --long --all --tree --level=1 --icons"
 alias df="duf /"
+alias wt="curl wttr.in/\?0"
 set fish_greeting
 bfetch
 starship init fish | source
