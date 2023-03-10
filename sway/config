@@ -195,7 +195,7 @@ smart_borders on
     bindsym $mod+Shift+Return exec $term --class="termfloat"
 
     # quick start some applications
-    bindsym $mod+o exec --no-startup-id              librewolf
+    bindsym $mod+o exec --no-startup-id              firefox
 
     # lock the screen
     bindsym $mod+Shift+x exec --no-startup-id        ~/.config/sway/swaylock.sh
