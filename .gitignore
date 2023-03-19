@@ -6,6 +6,8 @@
 !fish/**
 !gtk-3.0/
 !gtk-3.0/**
+!gtk-4.0/
+!gtk-4.0/**
 !helix/
 !helix/**
 !hypr/
@@ -16,7 +18,5 @@
 !sway/**
 !waybar/
 !waybar/**
-!rofi/
-!rofi/**
-!ranger/
-!ranger/**
+!wofi/
+!wofi/**
