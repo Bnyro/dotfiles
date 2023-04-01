@@ -6,9 +6,6 @@ window:
     x: 20
     y: 15
 font:
-  normal:
-    family: JetbrainsMonoNL
-    style: Regular
   size: 12
 live_config_reload: true
 dyncamic_padding: true

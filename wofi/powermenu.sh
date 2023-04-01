@@ -4,11 +4,13 @@ op=$( echo -e " Poweroff\n Reboot\n Suspend\n Lock\n Logout" | wo
 
 case $op in 
         poweroff)
-                ;&
+                loginctl poweroff
+                ;;
         reboot)
-                ;&
+                loginctl reboot
+                ;;
         suspend)
-                systemctl $op
+                loginctl suspend
                 ;;
         lock)
                 swaylock
