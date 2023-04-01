@@ -92,7 +92,7 @@ smart_borders on
     exec_always {
         gsettings set $gnome-schema gtk-theme 'Catppuccin'
         gsettings set $gnome-schema icon-theme 'Papirus-Dark'
-        gsettings set $gnome-schema cursor-theme 'Catppuccin-cursor'
+        gsettings set $gnome-schema cursor-theme 'Qogir-dark'
         gsettings set $gnome-schema font-name 'jetbrains mono nerd font 12'
     }
 
