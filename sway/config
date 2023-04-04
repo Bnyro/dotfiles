@@ -76,7 +76,7 @@ smart_borders on
     exec_always  --no-startup-id  mako &
     exec_always  --no-startup-id  fcitx5 &
     exec_always  --no-startup-id  nm-applet --indicator &
-    exec_always  --no-startup-id  ~/.config/waybar/launch_waybar.sh &
+    exec_always  --no-startup-id  waybar &
 
 #-------------------------------#
 # Make capslock work as escape #
@@ -355,3 +355,6 @@ bindsym Shift+Ctrl+Left          resize shrink width  5 px or 5 ppt
 bindsym Shift+Ctrl+Up            resize grow   height 5 px or 5 ppt
 bindsym Shift+Ctrl+Down          resize shrink height 5 px or 5 ppt
 bindsym Shift+Ctrl+Right         resize grow   width  5 px or 5 ppt
+
+exec pipewire
+exec pipewire-pulse
