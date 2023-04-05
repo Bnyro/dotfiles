@@ -129,7 +129,15 @@ riverctl focus-follows-cursor normal
 
 swaybg -i $(find ~/Projects/Artwork/Wallpaper/ | shuf -n 1) -m fill &
 
-exec waybar
-exec pipewire
-exec pipewire-pulse
-exec mako
+# Status bar
+exec waybar &
+
+# Audio
+exec pipewire &
+exec pipewire-pulse &
+
+# Notifications
+exec mako &
+
+# Output configuration
+exec kanshi &

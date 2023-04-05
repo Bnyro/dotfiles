@@ -22,3 +22,5 @@
 !waybar/**
 !wofi/
 !wofi/**
+!kanshi/
+!kanshi/**
