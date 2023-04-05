@@ -127,6 +127,7 @@ riverctl keyboard-layout de
 rivertile -view-padding 6 -outer-padding 4 &
 riverctl focus-follows-cursor normal
 
+# Wallpaper
 swaybg -i $(find ~/Projects/Artwork/Wallpaper/ | shuf -n 1) -m fill &
 
 # Status bar
@@ -141,3 +142,10 @@ exec mako &
 
 # Output configuration
 exec kanshi &
+
+# Input configuration
+TOUCHPAD="$(riverctl list-inputs | grep Touchpad)"
+riverctl input "$TOUCHPAD" events enabled
+riverctl input "$TOUCHPAD" tap enabled
+riverctl input "$TOUCHPAD" natural-scroll enabled
+riverctl input "$TOUCHPAD" tap-button-map left-right-middle
