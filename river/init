@@ -105,10 +105,11 @@ do
     riverctl map $mode None XF86MonBrightnessDown spawn 'light -U 5'
 done
 
-# Set background and border color
+# Set style and cursor settings
 riverctl background-color 0x242424
 riverctl border-color-focused 0xffc0cb
 riverctl border-color-unfocused 0x2e3440
+riverctl xcursor-theme Qogir-dark 12
 
 # Set keyboard repeat rate
 riverctl set-repeat 30 200
