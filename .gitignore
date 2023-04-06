@@ -1,9 +1,9 @@
 *
 !.gitignore
-!alacritty/
-!alacritty/**
 !fish/
 !fish/**
+!foot/
+!foot/**
 !gtk-3.0/
 !gtk-3.0/**
 !gtk-4.0/

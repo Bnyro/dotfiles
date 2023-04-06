@@ -80,7 +80,7 @@
   "memory": {
     "interval": 1,
     "format": "﬙ {percentage}%",
-    "on-click": "alacritty -e btm",
+    "on-click": "foot -e btm",
     "states": {
       "warning": 85,
     },
@@ -88,7 +88,7 @@
   "cpu": {
     "interval": 1,
     "format": " {usage}%",
-    "on-click": "alacritty -e btm",
+    "on-click": "foot -e btm",
   },
   "network": {
     "interval": 1,

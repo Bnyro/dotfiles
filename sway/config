@@ -117,7 +117,7 @@ smart_borders on
 #----------------------------------#
 # Your preferred terminal emulator #
 #----------------------------------#
-    set $term alacritty
+    set $term foot
     
 #-------------------------------------#
 # Your preferred application launcher #
