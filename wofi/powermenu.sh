@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-op=$( echo -e " Poweroff\n Reboot\n Suspend\n Hibernate\n Logout" | wofi -i --dmenu | awk '{print tolower($2)}' )
+op=$( echo -e " Shutdown\n Reboot\n Suspend\n Hibernate\n Logout" | wofi -i --dmenu | awk '{print tolower($2)}' )
 
 case $op in 
-        poweroff)
+        shutdown)
                 loginctl poweroff
                 ;;
         reboot)

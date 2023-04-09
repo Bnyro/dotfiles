@@ -12,3 +12,7 @@ function mkcd
     mkdir "$argv[1]"
     cd "$argv[1]"
 end
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
