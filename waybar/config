@@ -2,8 +2,7 @@
   "modules-left": [
     "custom/launcher",
     "river/tags",
-    "sway/workspaces",
-    "temperature",
+    "sway/workspaces"
   ],
   "modules-center": [
     "clock"
@@ -88,12 +87,6 @@
     "format-linked": "說 {essid} (No IP)",
     "format-disconnected": "說 Disconnected",
     "tooltip": false
-  },
-  "temperature": {
-    "hwmon-path": "",
-    //"critical-threshold": 80,
-    "tooltip": false,
-    "format": " {temperatureC}°C"
   },
   "custom/power": {
     "format": "",
