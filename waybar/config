@@ -15,11 +15,11 @@
     "cpu",
     "network",
     "battery",
-    "custom/powermenu",
+    "custom/power",
     "tray"
   ],
   "custom/launcher": {
-    "format": " ",
+    "format": "",
     "on-click": "~/.config/wofi/launcher.sh",
     "tooltip": false
   },
@@ -27,15 +27,7 @@
     "disable-scroll": true,
   },
   "river/tags": {
-    "num-tags": 9
-  },
-  "idle_inhibitor": {
-    "format": "{icon}",
-    "format-icons": {
-      "activated": "",
-      "deactivated": ""
-    },
-    "tooltip": false
+    "num-tags": 6
   },
   "backlight": {
     "device": "intel_backlight",
@@ -103,7 +95,7 @@
     "tooltip": false,
     "format": " {temperatureC}°C"
   },
-  "custom/powermenu": {
+  "custom/power": {
     "format": "",
     "on-click": "~/.config/wofi/powermenu.sh",
     "tooltip": false
