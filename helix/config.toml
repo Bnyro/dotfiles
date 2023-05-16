@@ -1,4 +1,18 @@
 theme = "catppuccin_mocha"
 
+[editor]
+auto-save = true
+bufferline = "multiple"
+
+[editor.soft-wrap]
+enable = true
+
+[editor.lsp]
+display-inlay-hints = true
+
+[editor.statusline]
+left = ["file-name", "mode", "version-control"]
+
 [keys.insert]
 C-c = "normal_mode"
+

@@ -129,6 +129,7 @@ exec waybar &
 # Audio
 exec pipewire &
 exec pipewire-pulse &
+exec blueman-applet &
 
 # Notifications
 exec mako &
