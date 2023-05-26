@@ -129,6 +129,9 @@ exec waybar &
 # Audio
 exec pipewire &
 exec pipewire-pulse &
+exec wireplumber &
+
+# Bluetooth
 exec blueman-applet &
 
 # Notifications
