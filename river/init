@@ -13,6 +13,7 @@
 # Program keybindings
 riverctl map normal Super Return spawn foot
 riverctl map normal Super O spawn firefox
+riverctl map normal Super G spawn grim
 
 # close the focused view
 riverctl map normal Super Q close
