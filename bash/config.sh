@@ -25,3 +25,9 @@ eval "$(zoxide init bash)"
 
 # Show system information
 clear && bfetch
+
+lol() {
+  ASCII=$(find /usr/share/cows -name "*.cow" | shuf -n 1)
+  fortune | cowsay -f "$ASCII" | lolcat
+}
+
