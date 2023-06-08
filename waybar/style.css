@@ -100,10 +100,6 @@ window#waybar {
   padding-right: 1.7rem;
 }
 
-#tray {
-  border-radius: 1rem;
-}
-
 tooltip {
   background: @base;
   border: 1px solid @pink;

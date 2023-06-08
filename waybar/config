@@ -14,8 +14,7 @@
     "cpu",
     "network",
     "battery",
-    "custom/power",
-    "tray"
+    "custom/power"
   ],
   "custom/launcher": {
     "format": "",
