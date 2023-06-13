@@ -32,12 +32,12 @@
     "on-scroll-up": "light -A 5",
     "on-scroll-down": "light -U 5",
     "format": "{icon} {percent}%",
-    "format-icons": ["","","",""]
+    "format-icons": ["󰃞","󰃟","󰃝","󰃠"]
   },
   "pulseaudio": {
     "scroll-step": 1,
     "format": "{icon} {volume}%", 
-    "format-muted": "婢 Muted",
+    "format-muted": "󰖁 Muted",
     "format-icons": {
       "default": ["", "", ""]
     },
@@ -55,9 +55,9 @@
       "critical": 10
     },
     "format": "{icon} {capacity}%",
-    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂁", "󰂂", "󰁹"],
     "format-full": "{icon} {capacity}%",
-    "format-charging": " {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
     "tooltip": false
   },
   "clock": {
@@ -68,7 +68,7 @@
   },
   "memory": {
     "interval": 1,
-    "format": "﬙ {percentage}%",
+    "format": "󰘚 {percentage}%",
     "on-click": "foot -e btm",
     "states": {
       "warning": 85,
@@ -76,15 +76,15 @@
   },
   "cpu": {
     "interval": 1,
-    "format": " {usage}%",
+    "format": "󰍛 {usage}%",
     "on-click": "foot -e btm",
   },
   "network": {
     "interval": 1,
-    "format-wifi": "說 {essid}",
-    "format-ethernet": "  {ifname} ({ipaddr})",
-    "format-linked": "說 {essid} (No IP)",
-    "format-disconnected": "說 Disconnected",
+    "format-wifi": "󰒢 {essid}",
+    "format-ethernet": "󰈀  {ifname} ({ipaddr})",
+    "format-linked": "󰒢 {essid} (No IP)",
+    "format-disconnected": "󰒢 Disconnected",
     "tooltip": false
   },
   "custom/power": {
