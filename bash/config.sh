@@ -1,10 +1,9 @@
 #!/usr/bin/bash
 
 # Aliases
-alias ls="exa --long --all --tree --level=1 --icons"
+alias ls="lsd -l"
 alias df="duf /"
 alias wt="curl wttr.in/\?0"
-alias f="fzf --preview 'clear && bat --color=always {}'"
 
 # Path ENV
 export PATH="$PATH:/usr/local/bin"
