@@ -1,74 +1,59 @@
 {
+  "margin-top": 10,
+  "margin-left": 10,
+  "margin-right": 10,
   "modules-left": [
-    "custom/launcher",
     "river/tags",
-    "sway/workspaces"
+    "sway/workspaces",
+    "custom/separator",
+    "river/window",
+    "sway/window",
   ],
   "modules-center": [
-    "clock"
+    "clock",
   ],
   "modules-right": [
     "pulseaudio",
+    "custom/separator",
     "backlight",
+    "custom/separator",
     "memory",
+    "custom/separator",
     "cpu",
-    "network",
+    "custom/separator",
     "battery",
-    "custom/power"
+    "custom/separator",
+    "network",
+    "custom/separator",
+    "tray",
   ],
-  "custom/launcher": {
-    "format": "",
-    "on-click": "~/.config/wofi/launcher.sh",
-    "tooltip": false
-  },
   "sway/workspaces": {
     "disable-scroll": true,
   },
   "river/tags": {
-    "num-tags": 6
+    "num-tags": 6,
   },
   "backlight": {
-    "device": "intel_backlight",
     "on-scroll-up": "light -A 5",
     "on-scroll-down": "light -U 5",
-    "format": "{icon} {percent}%",
-    "format-icons": ["󰃞","󰃟","󰃝","󰃠"]
+    "format": "<span color=\"#cba6f7\">BRI</span> {percent}%",
   },
   "pulseaudio": {
     "scroll-step": 1,
-    "format": "{icon} {volume}%", 
-    "format-muted": "󰖁 Muted",
-    "format-icons": {
-      "default": ["", "", ""]
-    },
-    "states": {
-      "warning": 85,
-    },
+    "format": "<span color=\"#cba6f7\">VOL</span> {volume}%",
+    "format-muted": "Muted",
     "scroll-step": 1,
     "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-    "tooltip": false,
-  },
-  "battery": {
-    "interval": 10,
-    "states": {
-      "warning": 20,
-      "critical": 10
-    },
-    "format": "{icon} {capacity}%",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂁", "󰂂", "󰁹"],
-    "format-full": "{icon} {capacity}%",
-    "format-charging": "󰂄 {capacity}%",
-    "tooltip": false
   },
   "clock": {
     "interval": 1,
     "format": "{:%I:%M %p  %A %b %d}",
     "tooltip": true,
-    "tooltip-format": "{:%A, %d %B %Y}\n<tt>{calendar}</tt>"
+    "tooltip-format": "{:%A, %d %B %Y}\n<tt>{calendar}</tt>",
   },
   "memory": {
     "interval": 1,
-    "format": "󰘚 {percentage}%",
+    "format": "<span color=\"#cba6f7\">RAM</span> {percentage}%",
     "on-click": "foot -e btm",
     "states": {
       "warning": 85,
@@ -76,24 +61,31 @@
   },
   "cpu": {
     "interval": 1,
-    "format": "󰍛 {usage}%",
+    "format": "<span color=\"#cba6f7\">CPU</span> {usage}%",
     "on-click": "foot -e btm",
   },
   "network": {
     "interval": 1,
-    "format-wifi": "󰒢 {essid}",
-    "format-ethernet": "󰈀  {ifname} ({ipaddr})",
-    "format-linked": "󰒢 {essid} (No IP)",
-    "format-disconnected": "󰒢 Disconnected",
-    "tooltip": false
+    "format-wifi": "{essid}",
+    "format-ethernet": "{ifname} ({ipaddr})",
+    "format-linked": "{essid} (No IP)",
+    "format-disconnected": "Disconnected",
   },
-  "custom/power": {
-    "format": "",
-    "on-click": "~/.config/wofi/powermenu.sh",
-    "tooltip": false
+  "battery": {
+    "interval": 10,
+    "states": {
+      "warning": 30,
+      "critical": 10,
+    },
+    "format-full": "<span color=\"#cba6f7\">BAT</span> {capacity}%",
   },
   "tray": {
     "icon-size": 15,
-    "spacing": 5
+    "spacing": 5,
+  },
+  "custom/separator": {
+    "format": "|",
+    "interval": "once",
+    "tooltip": false,
   },
 }
