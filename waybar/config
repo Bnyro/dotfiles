@@ -43,6 +43,7 @@
     "on-scroll-up": "light -A 5",
     "on-scroll-down": "light -U 5",
     "format": "<span color=\"#cba6f7\">BRI</span> {percent}%",
+    "tooltip-format": "{percent}%",
   },
   "pulseaudio": {
     "scroll-step": 1,
