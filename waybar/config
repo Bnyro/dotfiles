@@ -30,8 +30,14 @@
   "sway/workspaces": {
     "disable-scroll": true,
   },
+  "sway/window": {
+    "max-length": 50,
+  },
   "river/tags": {
     "num-tags": 6,
+  },
+  "river/window": {
+    "max-length": 50,
   },
   "backlight": {
     "on-scroll-up": "light -A 5",
