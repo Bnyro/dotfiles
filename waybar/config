@@ -84,7 +84,7 @@
       "warning": 30,
       "critical": 10,
     },
-    "format-full": "<span color=\"#cba6f7\">BAT</span> {capacity}%",
+    "format": "<span color=\"#cba6f7\">BAT</span> {capacity}%",
   },
   "tray": {
     "icon-size": 15,
