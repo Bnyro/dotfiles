@@ -141,6 +141,9 @@ exec mako &
 # Output configuration
 exec kanshi &
 
+# Nextcloud
+exec nextcloud --background &
+
 # Input configuration
 TOUCHPAD="$(riverctl list-inputs | grep Touchpad)"
 riverctl input "$TOUCHPAD" events enabled
