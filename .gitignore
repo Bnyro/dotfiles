@@ -22,3 +22,5 @@
 !wofi/**
 !kanshi/
 !kanshi/**
+!zellij
+!zellij/**
