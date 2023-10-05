@@ -19,10 +19,10 @@ riverctl map normal Super G spawn grim
 riverctl map normal Super Q close
 
 # show power menu
-riverctl map normal Super+Shift E spawn ~/.config/wofi/powermenu.sh
+riverctl map normal Super+Shift E spawn ~/.config/fuzzel/powermenu.sh
 
-# show wofi application menu
-riverctl map normal Super D spawn ~/.config/wofi/launcher.sh
+# show application menu
+riverctl map normal Super D spawn ~/.config/fuzzel/launcher.sh
 
 # focus the next/previous view in the layout stack
 riverctl map normal Super Right focus-view next

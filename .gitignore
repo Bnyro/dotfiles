@@ -4,6 +4,8 @@
 !bash/**
 !foot/
 !foot/**
+!fuzzel/
+!fuzzel/**
 !gtk-3.0/
 !gtk-3.0/**
 !gtk-4.0/
@@ -18,8 +20,6 @@
 !sway/**
 !waybar/
 !waybar/**
-!wofi/
-!wofi/**
 !kanshi/
 !kanshi/**
 !zellij
