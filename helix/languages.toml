@@ -21,3 +21,13 @@ formatter = { command = 'npx', args = ["prettier", "--parser", "svelte"] }
 name = "vue"
 auto-format = true
 formatter = { command = 'npx', args = ["prettier", "--parser", "vue"] }
+
+[[language]]
+name = "typst"
+scope = "source.typst"
+injection-regex = "typst"
+file-types = ["typst", "typ"]
+roots = []
+comment-token = "//"
+language-server = { command = "typst-lsp" }
+indent = { tab-width = 2, unit = "  " }

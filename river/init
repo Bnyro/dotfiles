@@ -121,8 +121,8 @@ riverctl keyboard-layout de
 rivertile -view-padding 6 -outer-padding 4 &
 riverctl focus-follows-cursor normal
 
-# Wallpaper
-swaybg -i $(find ~/Projects/Artwork/Wallpaper/ | shuf -n 1) -m fill &
+# Set a random wallpaper
+swaybg -i $(find /usr/share/backgrounds -name '*.jpg' -o -name '*.png' | shuf -n 1) -m fill &
 
 # Status bar
 exec waybar &

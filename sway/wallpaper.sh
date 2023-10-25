@@ -1,4 +1,4 @@
 #! /bin/bash
 
 pkill swaybg
-swaybg -i $(find ~/Projects/Artwork/Wallpaper/ | shuf -n 1) -m fill &
+swaybg -i $(find /usr/share/backgrounds -name '*.jpg' -o -name '*.png' | shuf -n 1) -m fill &
