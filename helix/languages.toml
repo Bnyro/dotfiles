@@ -4,12 +4,10 @@ formatter = { command = 'npx', args = ["prettier", "--parser", "html"] }
 
 [[language]]
 name = "json"
-config = { "json" = { "validate" = { "enable" = true } } }
 formatter = { command = 'npx', args = ["prettier", "--parser", "json"] }
 
 [[language]]
 name = "css"
-config = { "css" = { validate = { enable = true } } }
 formatter = { command = 'npx', args = ["prettier", "--parser", "css"] }
 
 [[language]]
@@ -29,5 +27,12 @@ injection-regex = "typst"
 file-types = ["typst", "typ"]
 roots = []
 comment-token = "//"
-language-server = { command = "typst-lsp" }
+language-servers = ["typst-lsp"]
 indent = { tab-width = 2, unit = "  " }
+
+[language.auto-pairs]
+'(' = ')'
+'{' = '}'
+'[' = ']'
+'$' = '$'
+'"' = '"'
