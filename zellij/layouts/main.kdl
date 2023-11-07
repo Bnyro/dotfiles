@@ -1,0 +1,16 @@
+layout {
+    pane size=1 borderless=true {
+        plugin location="zellij:tab-bar"
+    }
+    pane split_direction="vertical" {
+        pane size="65%" focus=true name="Code"
+        pane split_direction="horizontal" size="35%" {
+            pane command="btm" size="50%" name="Stats"
+            pane size="50%" name="Execute"
+        }
+    }
+    pane size=2 borderless=true {
+        plugin location="zellij:status-bar"
+    }
+}
+

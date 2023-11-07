@@ -186,7 +186,7 @@ plugins {
 //   - detach (Default)
 //   - quit
 //
-// on_force_close "quit"
+on_force_close "quit"
 
 //  Send a request for a simplified ui (without arrow fonts) to plugins
 //  Options:
@@ -246,7 +246,7 @@ theme "catppuccin-mocha"
 // The name of the default layout to load on startup
 // Default: "default"
 //
-// default_layout "compact"
+default_layout "main"
 
 // Choose the mode that zellij uses when starting up.
 // Default: normal
