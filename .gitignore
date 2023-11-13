@@ -1,5 +1,7 @@
 *
 !.gitignore
+!avizo/
+!avizo/**
 !bash/
 !bash/**
 !foot/
