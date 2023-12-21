@@ -142,7 +142,7 @@ smart_borders on
     # exec_always --no-startup-id swaybg -i ~/.config/sway/wallpaper/02.png 
     #output "*" bg ~/.config/sway/Background/wall5.png fill
     # Automatically change wallpapers at intervals
-    exec ~/.config/sway/wallpaper.sh
+    exec ~/.config/scripts/wallpaper.sh
 
 #-------------------------------------------------#
 # Control volume,monitor brightness,media players #

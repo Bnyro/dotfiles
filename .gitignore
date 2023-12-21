@@ -18,6 +18,8 @@
 !mako/**
 !river/
 !river/**
+!scripts/
+!scripts/**
 !sway/
 !sway/**
 !waybar/
