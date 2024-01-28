@@ -1,5 +1,7 @@
 #!/usr/bin/bash
 
+### Helper scripts for xbps
+
 USERNAME=Bnyro
 VOIDDIR=~/Projects/void-packages
 VOIDREPO="https://repo-default.voidlinux.org"

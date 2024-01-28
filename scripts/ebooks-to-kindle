@@ -1,4 +1,7 @@
 #!/bin/bash
+
+### Convert all ebooks in the current directory to Amazon's mobi format
+
 for file in *.{pdf,epub,pdb}; do
   ebook-convert "$file" "${file%.*}.mobi"
 done

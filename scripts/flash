@@ -1,6 +1,7 @@
 #!/bin/bash
 
-## Usage: flash <source file> <target drive>
+### Create a bootable medium from an ISO
+### Usage: flash <source file> <target drive>
 
 [ -z "$1" ] || [ -z "$2" ] && echo "Invalid arguments!" && exit 1
 

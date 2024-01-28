@@ -1,3 +1,5 @@
 #!/bin/bash
 
+### Make a screenshot of an area
+
 grimshot save area

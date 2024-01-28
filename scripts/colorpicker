@@ -1,1 +1,5 @@
+#!/bin/bash
+
+### Select a pixel on the screen and copy its hex color code to the clipboard
+
 exec grim -g "$(slurp -p)" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy
