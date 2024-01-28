@@ -6,7 +6,7 @@ alias df="duf /"
 alias wt="curl wttr.in/\?0"
 
 # Path ENV
-export PATH="$PATH:/usr/local/bin"
+export PATH="$PATH:/usr/local/bin:~/.config/scripts"
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return

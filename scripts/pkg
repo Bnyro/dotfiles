@@ -1,0 +1,180 @@
+#!/usr/bin/bash
+
+USERNAME=Bnyro
+VOIDDIR=~/Projects/void-packages
+VOIDREPO="https://repo-default.voidlinux.org"
+
+prep_pkgs() {
+	if [ ! -d "$VOIDDIR" ]; then
+		git clone "git@github.com:$USERNAME/void-packages" "$VOIDDIR"
+		cd "$VOIDDIR"
+		git remote add upstream "https://github.com/void-linux/void-packages.git"
+		git fetch upstream
+		git reset --hard upstream/master
+		git push
+		./xbps-src binary-bootstrap
+		./xbps-src clean
+	else
+		cd "$VOIDDIR"
+	fi
+}
+pkg_install() { # package name
+	./xbps-src pkg "$1" || exit 1
+	xi -y "$1"
+}
+
+build() { # package/branch name, (optional) github user name of fork, e.g. Bnyro
+	prep_pkgs
+	if [ "$2" ]; then
+		git remote add "$2" "https://github.com/$2/void-packages.git"
+		git fetch "$2"
+		git checkout "$2"/"$1"
+		git merge upstream/master --no-edit
+	else
+		git checkout "$1"
+	fi
+	pkg_install "$1"
+	git checkout master
+}
+
+commit() { # package name (optional)
+	pkgname="$1"
+	if [ -z "$pkgname" ]; then
+		pkgname=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
+	fi
+
+	xgensum -i "$pkgname"
+	pkg_install "$pkgname" || exit 1
+	xbump "$pkgname"
+	git push --set-upstream origin --force "$(git branch --show-current)"
+
+	echo -e "\nMaintainer: $(maintainer $pkgname)"
+	search "$pkgname"
+	xlint "$pkgname" || exit 1
+	echo ""
+}
+
+bump() { # package name, new version to update to, -{a,o,s} to adopt, orphan or keep branch (optional)
+	prep_pkgs
+	# only checkout to a new branch if not disabled
+	if ! [ "$3" = "-s" ]; then
+		git branch -D "$1"
+		git checkout -b "$1"
+		git reset --hard upstream/master
+	fi
+	template="srcpkgs/$1/template"
+	# update the version
+	sed -i "/^version=/s/=.*/=$2/" "$template"
+	# reset the revision
+	sed -i "/^revision=/s/=.*/=1/" "$template"
+	# replace all legacy http occurences
+	sed -i "s@http://@https://@g" "$template"
+	# update the maintainer if specified
+	case $3 in
+		-o) 
+			sed -i "0,/maintainer=.*/s//maintainer=\"Orphaned <orphan@voidlinux.org>\"/" "$template"
+			;;
+		-a)
+			username=$(git config user.name)
+			email=$(git config user.email)
+			sed -i "0,/maintainer=.*/s//maintainer=\"$username <$email>\"/" "$template"
+			;;
+	esac
+	commit "$1"
+}
+
+pr() { # test state (YES, briefly), pr title (optional)
+	[ -z "$1" ] && exit 1
+	title=$(git show -s --format=%s)
+	[ "$2" ] && title="$2"
+	echo "
+#### Testing the changes
+- I tested the changes in this PR: **$1**
+
+#### Local build testing
+- I built this PR locally for my native architecture, x86_64-glibc
+" | gh pr create --title "$title" --body-file -
+	git checkout master
+}
+
+update() {
+	sudo xbps-install -Syu
+	sudo xbps-remove -O
+	sudo rm -rf /var/cache/* /var/tmp/*
+	sudo vkpurge rm all
+}
+
+parse_pkg_block() { # outdated pkg list
+	installed=$(xpkg | sed -e '/^lib.*$/d')
+	installed=$(echo -e "\n$installed\n")
+	echo "$1" | while read line; do
+		pkgname=$(echo $line | cut -d " " -f 1)
+		if [ -z "$line" ] || [[ "$line" = "------"* ]]; then
+			continue
+		elif [[ "$line" =~ .+@.+ ]]; then
+			currentmaintainer="$line"
+		elif echo "$installed" | grep -zoP "\n$pkgname\n" &> /dev/null; then
+			echo $(echo $line | sed 's/  \+/   /g') $currentmaintainer
+		fi
+	done
+}
+
+check_pkgs() { # the type of packages to return (-o: orphaned, or outdated for a long time)
+	prep_pkgs
+	usermail=$(git config user.email)
+	echo "Outdated packages of $usermail:"
+	curl -s "$VOIDREPO/void-updates/void-updates/updates_$usermail.txt"
+	echo "========================================="
+	outdatedall=$(curl -s "$VOIDREPO/void-updates/void-updates.txt" | tail -n +4)
+	outdateddeduped="$(echo "$outdatedall" | tac | awk '!seen[$1]++' | tac)"
+	outdated="$(parse_pkg_block "$outdateddeduped")"
+	if [ "$1" = "-o" ]; then
+		outdated="$(echo "$outdated" | sed 's/ /&/6;T;d'; echo "$outdated" | grep -E 'orphan|ericonr|gottox')"
+	fi
+	outdated="$(echo "$outdated" | sort | uniq)"
+	echo -e "$outdated"
+	echo "============================"
+	echo -e "Outdated packages total: $(echo "$outdated" | wc -l)\n"
+}
+
+reset() {
+	oldbranch=$(git rev-parse --abbrev-ref HEAD)
+	git checkout master
+	git reset --hard
+	git branch -D "$oldbranch"
+	git push origin -d "$oldbranch"
+}
+
+orphan() { # maintainer field of person to orphan
+	prep_pkgs
+	name="$(echo "$1" | cut -d '<' -f 1 | sed 's/ $//')"
+	branch="orphan-${name/ /-}"
+	git checkout -b "$branch"
+	grep -Ril "$1" srcpkgs/**/* 2> /dev/null | while read template; do
+		sed -i "0,/maintainer=.*/s//maintainer=\"Orphaned <orphan@voidlinux.org>\"/" "$template"
+	done
+	git commit -am "srcpkgs: orphan $name's packages"
+	git push --set-upstream origin "$branch"
+}
+
+search() { # query, cmd flags
+	gh search prs --state open --repo void-linux/void-packages --match title "$1" ${@:2}
+}
+
+maintainer() { # pkg name
+	prep_pkgs
+	cat "srcpkgs/$1/template" | grep "maintainer=" | cut -d "=" -f 2 | tr -d '"'
+}
+
+case ${1} in
+update) update ;;
+check) check_pkgs "$2" ;;
+build) build "$2" "$3" ;;
+bump) bump "$2" "$3" "$4" ;;
+commit) commit "$2" ;;
+pr) pr "$2" "$3" ;;
+reset) reset ;;
+orphan) orphan "$2" ;;
+search) search ${@:2} ;;
+who) maintainer "$2" ;;
+esac

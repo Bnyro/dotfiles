@@ -14,9 +14,9 @@ mode="normal"
 # Program keybindings
 riverctl map $mode Super Return spawn foot
 riverctl map $mode Super O spawn firefox
-riverctl map $mode Super G spawn grim
-riverctl map $mode Super S spawn grimshot save area
-riverctl map $mode Super C spawn exec ~/.config/scripts/colorpicker.sh
+riverctl map $mode Super S spawn grim
+riverctl map $mode Super A spawn ~/.config/scripts/grimarea
+riverctl map $mode Super C spawn ~/.config/scripts/colorpicker
 
 # close the focused view
 riverctl map $mode Super Q close
@@ -117,7 +117,7 @@ rivertile -view-padding 6 -outer-padding 4 &
 riverctl focus-follows-cursor $mode
 
 # Set a random wallpaper
-exec ~/.config/scripts/wallpaper.sh &
+exec ~/.config/scripts/wallpaper &
 
 # Status bar
 exec waybar &

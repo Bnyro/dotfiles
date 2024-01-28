@@ -1,0 +1,100 @@
+#!/bin/bash
+
+### Based on nerdfetch, ufetch, pfetch & rxfetch
+
+## GET SYSTEM INFORMATION
+
+has() {
+	(command -v "$1") &>/dev/null
+}
+
+get_os() {
+	awk -F= '$1=="PRETTY_NAME" { print $2 ;}' /etc/os-release | sed 's/\"//g'
+}
+
+get_kernel() {
+	uname -r | cut -d - -f 1
+}
+
+get_de() {
+	echo ${XDG_CURRENT_DESKTOP:-${DESKTOP_SESSION:-${GDMSESSION:-unknown}}}
+}
+
+get_storage() {
+	df -h --output=used,size / | awk 'NR == 2 { print $1 }'
+}
+
+get_ram() {
+	# free -h | awk 'NR == 2 { print $3"/"$2 }' | sed 's/i//g'
+	free -h | awk 'NR == 2 { print $3 }' | sed 's/i//g' | sed 's/,/./g'
+}
+
+get_uptime() {
+	s=$(</proc/uptime) && s=${s//.*/}
+	d=$((s / 60 / 60 / 24)) && [ $d != 0 ] && printf "${d}d "
+	h=$((s / 60 / 60 % 24)) && [ $h != 0 ] && printf "${h}h "
+	m=$((s / 60 % 60)) && [ $m != 0 ] && printf "${m}m "
+	((s / 60 == 0)) && printf 0m
+}
+
+get_packages() {
+	(
+		has pacman-key && pacman -Q
+		has dpkg && dpkg --list
+		has dnf && dnf list installed
+		has bonsai && bonsai list
+		has crux && pkginfo -i
+		has rpm && rpm -qa
+		has xbps-query && xbps-query -l
+		has apk && apk info
+		has guix && guix package --list-installed
+		has opkg && opkg list-installed
+		# Directories containing packages.
+		has kiss && printf '%s\n' /var/db/kiss/installed/*/
+		has cpt-list && printf '%s\n' /var/db/cpt/installed/*/
+		has brew && printf '%s\n' "$(brew --cellar)/"*
+		has emerge && printf '%s\n' /var/db/pkg/*/*/
+		has pkgtool && printf '%s\n' /var/log/packages/*
+		has eopkg && printf '%s\n' /var/lib/eopkg/package/*
+		# 'nix' requires two commands.
+		has nix-store && {
+			nix-store -q --requisites /run/current-system/sw
+			nix-store -q --requisites ~/.nix-profile
+		}
+	) | wc -l
+}
+
+## DEFINE COLORS
+
+if has tput; then
+	reset=$(tput sgr0)
+	bold=$(tput bold)
+	black=$(tput setaf 0)
+	red=$(tput setaf 1)
+	green=$(tput setaf 2)
+	yellow=$(tput setaf 3)
+	blue=$(tput setaf 4)
+	magenta=$(tput setaf 5)
+	cyan=$(tput setaf 6)
+	white=$(tput setaf 7)
+fi
+
+ic=${reset}${bold} # info
+c0=${black}        # first color
+c1=${white}        # second color
+c2=${yellow}       # third color
+
+## PRINT OUTPUT
+
+cat <<EOF
+
+${c0}      ___      ${magenta}${bold}${USER,,}@$(</etc/hostname)
+${c0}     (${c1}.. ${c0}\     ${green}os        ${ic}$(get_os)
+${c0}     (${c2}<> ${c0}|     ${cyan}kernel    ${ic}$(get_kernel)
+${c0}    /${c1}/  \\ ${c0}\\    ${blue}uptime    ${ic}$(get_uptime)
+${c0}   ( ${c1}|  | ${c0}/|   ${yellow}packages  ${ic}$(get_packages)
+${c2}  _${c0}/\\ ${c1}__)${c0}/${c2}_${c0})   ${red}disk      ${ic}$(get_storage)
+${c2}  \/${c0}-____${c2}\/${reset}    ${green}ram       ${ic}$(get_ram)
+${c2}               ${cyan}wm        $ic$(get_de)
+${reset}
+EOF

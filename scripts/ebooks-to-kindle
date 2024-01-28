@@ -1,0 +1,6 @@
+#!/bin/bash
+for file in *.{pdf,epub,pdb}; do
+  ebook-convert "$file" "${file%.*}.mobi"
+done
+
+sudo mv *.mobi /mnt/documents/

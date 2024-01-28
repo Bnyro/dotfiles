@@ -20,8 +20,6 @@
 !river/**
 !scripts/
 !scripts/**
-!sway/
-!sway/**
 !waybar/
 !waybar/**
 !kanshi/
