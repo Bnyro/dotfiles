@@ -6,6 +6,10 @@ USERNAME=Bnyro
 VOIDDIR=~/Projects/void-packages
 VOIDREPO="https://repo-default.voidlinux.org"
 
+get_branch() {
+	git rev-parse --abbrev-ref HEAD
+}
+
 prep_pkgs() {
 	if [ ! -d "$VOIDDIR" ]; then
 		git clone "git@github.com:$USERNAME/void-packages" "$VOIDDIR"
@@ -87,8 +91,17 @@ bump() { # package name, new version, -{a,o,s} to adopt, orphan or keep branch (
 
 pr() { # test state (YES, briefly), pr title (optional)
 	[ -z "$1" ] && exit 1
-	title=$(git show -s --format=%s)
-	[ "$2" ] && title="$2"
+
+	title=`if [ "$2" ]; then $2; else git show -s --format=%s; fi`
+
+	username=$(git config user.name)
+	existingpr=`gh pr list --author "$username" --search $(get_branch) | cut -f 1`
+
+	if [ "$existingpr" ]; then
+		gh pr edit "$existingpr" --title "$title"
+		exit 0
+	fi
+
 	echo "
 #### Testing the changes
 - I tested the changes in this PR: **$1**
@@ -151,7 +164,7 @@ check_pkgs() { # [-o]: orphaned/outdated, [-m]: manually installed
 }
 
 reset() {
-	oldbranch=$(git rev-parse --abbrev-ref HEAD)
+	oldbranch=$(get_branch)
 	git checkout master
 	git reset --hard
 	git branch -D "$oldbranch"
