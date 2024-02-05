@@ -25,7 +25,7 @@ pkg_install() { # package name
 	xi -y "$1"
 }
 
-build() { # package/branch name, (optional) github user name of fork, e.g. Bnyro
+build() { # package/branch name, (optional) github user name of fork
 	prep_pkgs
 	if [ "$2" ]; then
 		git remote add "$2" "https://github.com/$2/void-packages.git"
@@ -56,7 +56,7 @@ commit() { # package name (optional)
 	echo ""
 }
 
-bump() { # package name, new version to update to, -{a,o,s} to adopt, orphan or keep branch (optional)
+bump() { # package name, new version, -{a,o,s} to adopt, orphan or keep branch (optional)
 	prep_pkgs
 	# only checkout to a new branch if not disabled
 	if ! [ "$3" = "-s" ]; then
@@ -107,9 +107,12 @@ update() {
 }
 
 parse_pkg_block() { # outdated pkg list
-	installed=$(xpkg | sed -e '/^lib.*$/d')
+	local packages="$1"
+	local xpkgflags="$2"
+
+	installed=$(xpkg $xpkgflags | sed -e '/^lib.*$/d')
 	installed=$(echo -e "\n$installed\n")
-	echo "$1" | while read line; do
+	echo "$packages" | while read line; do
 		pkgname=$(echo $line | cut -d " " -f 1)
 		if [ -z "$line" ] || [[ "$line" = "------"* ]]; then
 			continue
@@ -121,16 +124,24 @@ parse_pkg_block() { # outdated pkg list
 	done
 }
 
-check_pkgs() { # the type of packages to return (-o: orphaned, or outdated for a long time)
+check_pkgs() { # [-o]: orphaned/outdated, [-m]: manually installed
+	local filterorphaned=true
+	local xpkgflags=""
+
+	for arg in "$@"; do
+		if [[ "$arg" == "-o" ]]; then filterorphaned=`not $filterorphaned`
+		else xpkgflags+="$arg "; fi
+	done
 	prep_pkgs
+
 	usermail=$(git config user.email)
 	echo "Outdated packages of $usermail:"
 	curl -s "$VOIDREPO/void-updates/void-updates/updates_$usermail.txt"
 	echo "========================================="
 	outdatedall=$(curl -s "$VOIDREPO/void-updates/void-updates.txt" | tail -n +4)
 	outdateddeduped="$(echo "$outdatedall" | tac | awk '!seen[$1]++' | tac)"
-	outdated="$(parse_pkg_block "$outdateddeduped")"
-	if [ "$1" = "-o" ]; then
+	outdated="$(parse_pkg_block "$outdateddeduped" "$xpkgflags")"
+	if [ "$filterorphaned" = true ]; then
 		outdated="$(echo "$outdated" | sed 's/ /&/6;T;d'; echo "$outdated" | grep -E 'orphan|ericonr|gottox')"
 	fi
 	outdated="$(echo "$outdated" | sort | uniq)"
