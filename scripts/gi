@@ -61,11 +61,11 @@ gitcleanbranches() {
 }
 
 case ${1} in
-clone|c) ghclone ${@:2} ;;
-init|i) gitinit ${@:2} ;;
+clone|c) ghclone "${@:2}" ;;
+init|i) gitinit "${@:2}" ;;
 push|p) gitpush "${@:2}" ;;
-refresh) gitrefresh ${@:2} ;;
-append|a) gitappend ${@:2} ;;
-reset|r) gitreset ${@:2} ;;
-clean) gitcleanbranches ${@:2} ;;
+refresh) gitrefresh "${@:2}" ;;
+append|a) gitappend "${@:2}" ;;
+reset|r) gitreset "${@:2}" ;;
+clean) gitcleanbranches "${@:2}" ;;
 esac

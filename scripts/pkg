@@ -235,14 +235,14 @@ maintainer() { # <package name>
 }
 
 case ${1} in
-update|u) update ;;
-check|c) check_pkgs ${@:2} ;;
-build) build ${@:2} ;;
-bump|b) bump ${@:2} ;;
-commit|c) commit ${@:2} ;;
-pr) pr ${@:2} ;;
-reset|r) reset ${@:2} ;;
-orphan|o) orphan ${@:2} ;;
-search|s) search ${@:2} ;;
-who) maintainer ${@:2} ;;
+update|u) update "${@:2}" ;;
+check|c) check_pkgs "${@:2}" ;;
+build) build "${@:2}" ;;
+bump|b) bump "${@:2}" ;;
+commit|c) commit "${@:2}" ;;
+pr) pr "${@:2}" ;;
+reset|r) reset "${@:2}" ;;
+orphan|o) orphan "${@:2}" ;;
+search|s) search "${@:2}" ;;
+who) maintainer "${@:2}" ;;
 esac
