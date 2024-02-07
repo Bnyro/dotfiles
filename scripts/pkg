@@ -6,6 +6,14 @@ USERNAME=Bnyro
 VOIDDIR=~/Projects/void-packages
 VOIDREPO="https://repo-default.voidlinux.org"
 
+inv() { # <true|false>
+	if [ "$1" = true ]; then
+		echo "false"
+	else
+		echo "true"
+	fi
+}
+
 get_branch() {
 	git rev-parse --abbrev-ref HEAD
 }
@@ -24,30 +32,32 @@ prep_pkgs() {
 		cd "$VOIDDIR"
 	fi
 }
-pkg_install() { # package name
+
+pkg_install() { # <package name>
 	./xbps-src pkg "$1" || exit 1
 	xi -y "$1"
 }
 
-build() { # package/branch name, (optional) github user name of fork
+build() { # <package/branch name> <github user name of fork>
+	local pkgname="$1"
+	local ghuser="$2"
+	
 	prep_pkgs
-	if [ "$2" ]; then
-		git remote add "$2" "https://github.com/$2/void-packages.git"
-		git fetch "$2"
-		git checkout "$2"/"$1"
+
+	if [ "$ghuser" ]; then
+		git remote add "$ghuser" "https://github.com/$ghuser/void-packages.git"
+		git fetch "$ghuser"
+		git checkout "$ghuser"/"$pkgname"
 		git merge upstream/master --no-edit
 	else
-		git checkout "$1"
+		git checkout "$pkgname"
 	fi
-	pkg_install "$1"
+	pkg_install "$pkgname"
 	git checkout master
 }
 
-commit() { # package name (optional)
-	pkgname="$1"
-	if [ -z "$pkgname" ]; then
-		pkgname=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
-	fi
+commit() { # <package name>
+	local pkgname="${1:-`get_branch`}"
 
 	xgensum -i "$pkgname"
 	pkg_install "$pkgname" || exit 1
@@ -60,42 +70,60 @@ commit() { # package name (optional)
 	echo ""
 }
 
-bump() { # package name, new version, -{a,o,s} to adopt, orphan or keep branch (optional)
+bump() { # <package name> <new version> -[a(dopt)|o(rphan)|k(eepbranch)]
+	local pkgname="$1"
+	local newversion="$2"
+	
+	local adopt=false
+	local orphan=false
+	local keepbranch=false
+
+	for arg in "${@:3}"; do
+		case $arg in
+			-a) adopt=`inv $adopt` ;;
+			-o) orphan=`inv $orphan` ;;
+			-k) keepbranch=`inv $keepbranch` ;;
+		esac
+	done
+
 	prep_pkgs
+
 	# only checkout to a new branch if not disabled
-	if ! [ "$3" = "-s" ]; then
-		git branch -D "$1"
-		git checkout -b "$1"
+	if ! [ "$keepbranch" = true ]; then
+		git branch -D "$pkgname"
+		git checkout -b "$pkgname"
 		git reset --hard upstream/master
 	fi
-	template="srcpkgs/$1/template"
+	local template="srcpkgs/$pkgname/template"
+	
 	# update the version
-	sed -i "/^version=/s/=.*/=$2/" "$template"
+	sed -i "/^version=/s/=.*/=$newversion/" "$template"
 	# reset the revision
 	sed -i "/^revision=/s/=.*/=1/" "$template"
 	# replace all legacy http occurences
 	sed -i "s@http://@https://@g" "$template"
+	
 	# update the maintainer if specified
-	case $3 in
-		-o) 
-			sed -i "0,/maintainer=.*/s//maintainer=\"Orphaned <orphan@voidlinux.org>\"/" "$template"
-			;;
-		-a)
-			username=$(git config user.name)
-			email=$(git config user.email)
-			sed -i "0,/maintainer=.*/s//maintainer=\"$username <$email>\"/" "$template"
-			;;
-	esac
+	if [ "$orphan" = true ]; then
+		sed -i "0,/maintainer=.*/s//maintainer=\"Orphaned <orphan@voidlinux.org>\"/" "$template"
+	fi
+
+	# adopt the package if specified
+	if [ "$adopt" = true ]; then
+		local username=$(git config user.name)
+		local email=$(git config user.email)
+		sed -i "0,/maintainer=.*/s//maintainer=\"$username <$email>\"/" "$template"
+	fi
+
 	commit "$1"
 }
 
-pr() { # test state (YES, briefly), pr title (optional)
-	[ -z "$1" ] && exit 1
+pr() { # <testing state> (<pr title>)
+	local testingstate="${1:-YES}"
+	local title="${2:-`git show -s --format=%s`}"
 
-	title=`if [ "$2" ]; then $2; else git show -s --format=%s; fi`
-
-	username=$(git config user.name)
-	existingpr=`gh pr list --author "$username" --search $(get_branch) | cut -f 1`
+	local username=$(git config user.name)
+	local existingpr=`gh pr list --author "$username" --search $(get_branch) | cut -f 1`
 
 	if [ "$existingpr" ]; then
 		gh pr edit "$existingpr" --title "$title"
@@ -119,14 +147,14 @@ update() {
 	sudo vkpurge rm all
 }
 
-parse_pkg_block() { # outdated pkg list
+parse_pkg_block() { # <outdated pkg list>
 	local packages="$1"
 	local xpkgflags="$2"
+	local currentmaintainer=""
 
-	installed=$(xpkg $xpkgflags | sed -e '/^lib.*$/d')
-	installed=$(echo -e "\n$installed\n")
+	local installed="\n$(xpkg $xpkgflags | sed -e '/^lib.*$/d')\n"
 	echo "$packages" | while read line; do
-		pkgname=$(echo $line | cut -d " " -f 1)
+		local pkgname=$(echo $line | cut -d " " -f 1)
 		if [ -z "$line" ] || [[ "$line" = "------"* ]]; then
 			continue
 		elif [[ "$line" =~ .+@.+ ]]; then
@@ -140,67 +168,81 @@ parse_pkg_block() { # outdated pkg list
 check_pkgs() { # [-o]: orphaned/outdated, [-m]: manually installed
 	local filterorphaned=true
 	local xpkgflags=""
+	local usermail=$(git config user.email)
 
 	for arg in "$@"; do
-		if [[ "$arg" == "-o" ]]; then filterorphaned=`not $filterorphaned`
+		if [[ "$arg" == "-o" ]]; then filterorphaned=`inv $filterorphaned`
 		else xpkgflags+="$arg "; fi
 	done
+
 	prep_pkgs
 
-	usermail=$(git config user.email)
 	echo "Outdated packages of $usermail:"
 	curl -s "$VOIDREPO/void-updates/void-updates/updates_$usermail.txt"
 	echo "========================================="
-	outdatedall=$(curl -s "$VOIDREPO/void-updates/void-updates.txt" | tail -n +4)
-	outdateddeduped="$(echo "$outdatedall" | tac | awk '!seen[$1]++' | tac)"
-	outdated="$(parse_pkg_block "$outdateddeduped" "$xpkgflags")"
+	
+	local outdated=$(curl -s "$VOIDREPO/void-updates/void-updates.txt" | tail -n +4)
+	outdated="$(echo "$outdated" | tac | awk '!seen[$1]++' | tac)"
+	outdated="$(parse_pkg_block "$outdated" "$xpkgflags")"
 	if [ "$filterorphaned" = true ]; then
 		outdated="$(echo "$outdated" | sed 's/ /&/6;T;d'; echo "$outdated" | grep -E 'orphan|ericonr|gottox')"
 	fi
 	outdated="$(echo "$outdated" | sort | uniq)"
+
 	echo -e "$outdated"
 	echo "============================"
 	echo -e "Outdated packages total: $(echo "$outdated" | wc -l)\n"
 }
 
-reset() {
-	oldbranch=$(get_branch)
-	git checkout master
+reset() { # <main branch>
+	local mainbranch="${1:-master}"
+	local oldbranch=$(get_branch)
+
+	git checkout "$mainbranch"
 	git reset --hard
 	git branch -D "$oldbranch"
 	git push origin -d "$oldbranch"
 }
 
-orphan() { # maintainer field of person to orphan
+orphan() { # <maintainer field of person to orphan>
 	prep_pkgs
-	name="$(echo "$1" | cut -d '<' -f 1 | sed 's/ $//')"
-	branch="orphan-${name/ /-}"
+
+	local maintainer="$1"
+	local name="$(echo "$maintainer" | cut -d '<' -f 1 | sed 's/ $//')"
+	local branch="orphan-${name/ /-}"
+
 	git checkout -b "$branch"
 	grep -Ril "$1" srcpkgs/**/* 2> /dev/null | while read template; do
 		sed -i "0,/maintainer=.*/s//maintainer=\"Orphaned <orphan@voidlinux.org>\"/" "$template"
 	done
+
 	git commit -am "srcpkgs: orphan $name's packages"
 	git push --set-upstream origin "$branch"
 }
 
-search() { # query, cmd flags
-	gh search prs --state open --repo void-linux/void-packages --match title "$1" ${@:2}
+search() { # <search query> (<cmd flags>)
+	local query="$1"
+
+	gh search prs --state open --repo void-linux/void-packages --match title "$query" ${@:2}
 }
 
-maintainer() { # pkg name
+maintainer() { # <package name>
+	local pkgname="$1"
+
 	prep_pkgs
-	cat "srcpkgs/$1/template" | grep "maintainer=" | cut -d "=" -f 2 | tr -d '"'
+
+	cat "srcpkgs/$pkgname/template" | grep "maintainer=" | cut -d "=" -f 2 | tr -d '"'
 }
 
 case ${1} in
-update) update ;;
-check) check_pkgs "$2" ;;
-build) build "$2" "$3" ;;
-bump) bump "$2" "$3" "$4" ;;
-commit) commit "$2" ;;
-pr) pr "$2" "$3" ;;
-reset) reset ;;
-orphan) orphan "$2" ;;
-search) search ${@:2} ;;
-who) maintainer "$2" ;;
+update|u) update ;;
+check|c) check_pkgs ${@:2} ;;
+build) build ${@:2} ;;
+bump|b) bump ${@:2} ;;
+commit|c) commit ${@:2} ;;
+pr) pr ${@:2} ;;
+reset|r) reset ${@:2} ;;
+orphan|o) orphan ${@:2} ;;
+search|s) search ${@:2} ;;
+who) maintainer ${@:2} ;;
 esac
