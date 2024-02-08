@@ -3,12 +3,15 @@
 ### Helper scripts for docker (compose)
 
 prune() {
-    yes | sudo docker container prune
-    yes | sudo docker image prune
-    yes | sudo docker network prune
-    yes | sudo docker volume prune
+    sudo docker system prune -af --volumes
+}
+
+update() {
+    sudo docker compose pull
+    sudo docker compose up -d
 }
 
 case $1 in
 p|prune) prune ;;
+u|update) update ;;
 esac
