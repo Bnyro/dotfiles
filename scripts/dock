@@ -1,0 +1,14 @@
+#!/bin/bash
+
+### Helper scripts for docker (compose)
+
+prune() {
+    yes | sudo docker container prune
+    yes | sudo docker image prune
+    yes | sudo docker network prune
+    yes | sudo docker volume prune
+}
+
+case $1 in
+p|prune) prune ;;
+esac
