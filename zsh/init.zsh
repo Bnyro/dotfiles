@@ -16,6 +16,9 @@ source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 # Completions
 fpath=(/usr/share/zsh/site-functions $fpath)
 
+# Generic coloriser
+[[ -s "/usr/share/grc/grc.zsh" ]] && source /usr/share/grc/grc.zsh
+
 # Starship
 eval "$(starship init zsh)"
 
