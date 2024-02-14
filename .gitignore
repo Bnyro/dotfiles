@@ -2,8 +2,6 @@
 !.gitignore
 !avizo/
 !avizo/**
-!bash/
-!bash/**
 !foot/
 !foot/**
 !fuzzel/
@@ -26,3 +24,5 @@
 !kanshi/**
 !zellij
 !zellij/**
+!zsh/
+!zsh/**
