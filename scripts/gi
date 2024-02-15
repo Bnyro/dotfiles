@@ -60,6 +60,14 @@ gitcleanbranches() {
 	git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
 }
 
+gitnewbranch() {
+	local oldbranch=$(gitbranch)
+	local newbranch=${1:-`exit 1`}
+
+	git checkout -b "$newbranch"
+	git branch -f "$oldbranch" HEAD
+}
+
 case ${1} in
 clone|c) ghclone "${@:2}" ;;
 init|i) gitinit "${@:2}" ;;
@@ -68,4 +76,5 @@ refresh) gitrefresh "${@:2}" ;;
 append|a) gitappend "${@:2}" ;;
 reset|r) gitreset "${@:2}" ;;
 clean) gitcleanbranches "${@:2}" ;;
+new|n) gitnewbranch "${@:2}" ;;
 esac
