@@ -25,5 +25,8 @@ eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
 
+# Load completions
+autoload -Uz compinit && compinit
+
 clear && bfetch
 
