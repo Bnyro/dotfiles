@@ -7,13 +7,7 @@ alias df="duf /"
 # Path environment variable
 export PATH="$PATH:/usr/local/bin:$HOME/.config/scripts"
 
-# Syntax highlighting
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Auto suggestions
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# Completions
+# Completions paths
 fpath=(/usr/share/zsh/site-functions $fpath)
 
 # Generic coloriser
@@ -25,8 +19,13 @@ eval "$(starship init zsh)"
 # Zoxide
 eval "$(zoxide init zsh)"
 
+# Auto suggestions
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
 # Load completions
 autoload -Uz compinit && compinit
 
-clear && bfetch
+# Syntax highlighting
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+clear && bfetch
