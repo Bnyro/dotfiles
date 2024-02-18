@@ -22,7 +22,9 @@
 !waybar/**
 !kanshi/
 !kanshi/**
-!zellij
+!zathura/
+!zathura/**
+!zellij/
 !zellij/**
 !zsh/
 !zsh/**
