@@ -33,4 +33,9 @@ source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+# Bind delete, start and end keys
+bindkey  "^[[F"   end-of-line
+bindkey  "^[[3~"  delete-char
+bindkey  "^[[H"   beginning-of-line
+
 clear && bfetch
