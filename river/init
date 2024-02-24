@@ -8,91 +8,93 @@
 # See the river(1), riverctl(1), and rivertile(1) man pages for complete
 # documentation.
 
-# Note: the "Super" modifier is also known as Logo, GUI, Windows, Mod4, etc.i
 mode="normal"
 
+# Mod1 for Alt, Mod4 for Super/Win key
+modkey="Super"
+
 # Program keybindings
-riverctl map $mode Super Return spawn foot
-riverctl map $mode Super O spawn firefox
-riverctl map $mode Super S spawn grim
-riverctl map $mode Super A spawn ~/.config/scripts/grimarea
-riverctl map $mode Super C spawn ~/.config/scripts/colorpicker
+riverctl map $mode $mod Return spawn foot
+riverctl map $mode $mod O spawn firefox
+riverctl map $mode $mod S spawn grim
+riverctl map $mode $mod A spawn ~/.config/scripts/grimarea
+riverctl map $mode $mod C spawn ~/.config/scripts/colorpicker
 
 # close the focused view
-riverctl map $mode Super Q close
+riverctl map $mode $mod Q close
 
 # show power menu
-riverctl map $mode Super+Shift E spawn ~/.config/fuzzel/powermenu.sh
+riverctl map $mode $mod+Shift E spawn ~/.config/fuzzel/powermenu.sh
 
 # show application menu
-riverctl map $mode Super D spawn ~/.config/fuzzel/launcher.sh
+riverctl map $mode $mod D spawn ~/.config/fuzzel/launcher.sh
 
 # focus the next/previous view in the layout stack
-riverctl map $mode Super Right focus-view next
-riverctl map $mode Super Left focus-view previous
+riverctl map $mode $mod Right focus-view next
+riverctl map $mode $mod Left focus-view previous
 
 # swap the focused view with the next/previous view in the layout stack
-riverctl map $mode Super+Shift J swap next
-riverctl map $mode Super+Shift K swap previous
+riverctl map $mode $mod+Shift J swap next
+riverctl map $mode $mod+Shift K swap previous
 
 # focus the next/previous output
-riverctl map $mode Super Period focus-output next
-riverctl map $mode Super Comma focus-output previous
+riverctl map $mode $mod Period focus-output next
+riverctl map $mode $mod Comma focus-output previous
 
 # send the focused view to the next/previous output
-riverctl map $mode Super+Shift Period send-to-output next
-riverctl map $mode Super+Shift Comma send-to-output previous
+riverctl map $mode $mod+Shift Period send-to-output next
+riverctl map $mode $mod+Shift Comma send-to-output previous
 
 # bump the focused view to the top of the layout stack
-riverctl map $mode Super+Shift Return zoom
+riverctl map $mode $mod+Shift Return zoom
 
 # decrease/increase the main ratio of rivertile(1)
-riverctl map $mode Super+Shift Left send-layout-cmd rivertile "main-ratio -0.05"
-riverctl map $mode Super+Shift Right send-layout-cmd rivertile "main-ratio +0.05"
+riverctl map $mode $mod+Shift Left send-layout-cmd rivertile "main-ratio -0.05"
+riverctl map $mode $mod+Shift Right send-layout-cmd rivertile "main-ratio +0.05"
 
 # move views
-riverctl map-pointer $mode Super BTN_LEFT move-view
+riverctl map-pointer $mode $mod BTN_LEFT move-view
 
 # resize views
-riverctl map-pointer $mode Super BTN_RIGHT resize-view
+riverctl map-pointer $mode $mod BTN_RIGHT resize-view
 
 # toggle float
-riverctl map-pointer $mode Super BTN_MIDDLE toggle-float
+riverctl map-pointer $mode $mod BTN_MIDDLE toggle-float
 
 for i in $(seq 1 9)
 do
     tags=$((1 << ($i - 1)))
 
-    # Super+[1-9] to focus tag [0-8]
-    riverctl map $mode Super $i set-focused-tags $tags
+    # $mod+[1-9] to focus tag [0-8]
+    riverctl map $mode $mod $i set-focused-tags $tags
 
-    # Super+Shift+[1-9] to tag focused view with tag [0-8]
-    riverctl map $mode Super+Shift $i set-view-tags $tags
+    # $mod+Shift+[1-9] to tag focused view with tag [0-8]
+    riverctl map $mode $mod+Shift $i set-view-tags $tags
 
-    # Super+Control+[1-9] to toggle focus of tag [0-8]
-    riverctl map $mode Super+Control $i toggle-focused-tags $tags
+    # $mod+Control+[1-9] to toggle focus of tag [0-8]
+    riverctl map $mode $mod+Control $i toggle-focused-tags $tags
 
-    # Super+Shift+Control+[1-9] to toggle tag [0-8] of focused view
-    riverctl map $mode Super+Shift+Control $i toggle-view-tags $tags
+    # $mod+Shift+Control+[1-9] to toggle tag [0-8] of focused view
+    riverctl map $mode $mod+Shift+Control $i toggle-view-tags $tags
 done
 
-# Super+0 to focus all tags
-# Super+Shift+0 to tag focused view with all tags
+# $mod+0 to focus all tags
+# $mod+Shift+0 to tag focused view with all tags
 all_tags=$(((1 << 32) - 1))
-riverctl map $mode Super 0 set-focused-tags $all_tags
-riverctl map $mode Super+Shift 0 set-view-tags $all_tags
+riverctl map $mode $mod 0 set-focused-tags $all_tags
+riverctl map $mode $mod+Shift 0 set-view-tags $all_tags
 
 # toggle float
-riverctl map $mode Super Space toggle-float
+riverctl map $mode $mod Space toggle-float
 
 # toggle fullscreen
-riverctl map $mode Super F toggle-fullscreen
+riverctl map $mode $mod F toggle-fullscreen
 
 # change layout orientation
-riverctl map $mode Super+Alt Up    send-layout-cmd rivertile "main-location top"
-riverctl map $mode Super+Alt Right send-layout-cmd rivertile "main-location right"
-riverctl map $mode Super+Alt Down  send-layout-cmd rivertile "main-location bottom"
-riverctl map $mode Super+Alt Left  send-layout-cmd rivertile "main-location left"
+riverctl map $mode $mod+Alt Up    send-layout-cmd rivertile "main-location top"
+riverctl map $mode $mod+Alt Right send-layout-cmd rivertile "main-location right"
+riverctl map $mode $mod+Alt Down  send-layout-cmd rivertile "main-location bottom"
+riverctl map $mode $mod+Alt Left  send-layout-cmd rivertile "main-location left"
 
 # Set style and cursor settings
 riverctl background-color 0x242424
