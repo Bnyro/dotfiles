@@ -11,7 +11,7 @@
 mode="normal"
 
 # Mod1 for Alt, Mod4 for Super/Win key
-modkey="Super"
+mod="Super"
 
 # Program keybindings
 riverctl map $mode $mod Return spawn foot
