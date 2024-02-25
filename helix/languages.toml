@@ -21,18 +21,9 @@ auto-format = true
 formatter = { command = 'npx', args = ["prettier", "--parser", "vue"] }
 
 [[language]]
-name = "typst"
-scope = "source.typst"
-injection-regex = "typst"
-file-types = ["typst", "typ"]
-roots = []
-comment-token = "//"
-language-servers = ["typst-lsp"]
-indent = { tab-width = 2, unit = "  " }
+name = "python"
+auto-format = true
 
-[language.auto-pairs]
-'(' = ')'
-'{' = '}'
-'[' = ']'
-'$' = '$'
-'"' = '"'
+[language.formatter]
+command = "black"
+args = ["--line-length", "120", "--skip-string-normalization", "--quiet", "-"]
