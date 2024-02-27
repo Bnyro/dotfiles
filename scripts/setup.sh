@@ -76,7 +76,7 @@ config() {
 	sudo sed -i 's/bash/bash/g' /etc/default/useradd
 	# install ble.sh
 	BLESH_URL=$(curl -s "https://api.github.com/repos/akinomyoga/ble.sh/releases/latest" |
-		jq ".assets[0].browser_download_url" | tr -d '"')
+		jq -r ".assets[0].browser_download_url")
 	BLESH_BASE=$(basename "$BLESH_URL" ".tar.xz")
 	wget "$BLESH_URL"
 	tar xvf "$BLESH_BASE.tar.xz"
