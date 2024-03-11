@@ -47,7 +47,7 @@ bar:
             conditions:
               ~activated: {empty: {}}
               activated:
-                - string: {text: "{title}"}
+                - string: {text: "{title}", max: 50}
 
   center:
     - clock:
@@ -57,6 +57,24 @@ bar:
           - string: {text: "{date}", right-margin: 5}
           - string: {text: "  "}
           - string: {text: "{time}"}
+
+    - script:
+        path: /usr/bin/playerctl
+        args:
+          - "--follow"
+          - "metadata"
+          - "-f"
+          - |
+            status|string|{{status}}
+            title|string|{{title}}
+        content:
+          map:
+            on-click:
+              left: playerctl play-pause
+              middle: playerctl next
+            conditions:
+              status == Paused: {string: {text: "󰏤 {title}", max: 100}}
+              status == Playing: {string: {text: "󰽴 {title}", max: 100}}
 
   right:
     - network:
