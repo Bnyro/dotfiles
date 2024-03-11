@@ -18,10 +18,10 @@
 !river/**
 !scripts/
 !scripts/**
-!waybar/
-!waybar/**
 !kanshi/
 !kanshi/**
+!yambar/
+!yambar/**
 !zathura/
 !zathura/**
 !zellij/

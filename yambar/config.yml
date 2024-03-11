@@ -1,0 +1,154 @@
+bar:
+  height: 40
+  location: top
+  spacing: 10
+  margin: 10
+
+  font: JetBrainsMono Nerd Font:pixelsize=14
+
+  foreground: cba6f7ff
+  background: 1e1e2eff
+
+  border:
+    margin: 10
+    bottom-margin: 0
+
+  left:
+    - river:
+        anchors:
+          - base: &river_base
+              left-margin: 10
+              right-margin: 10
+              conditions:
+                state == focused: {string: {text: "   {id}"}}
+                state == invisible: {string: {text: "{id}"}}
+        content:
+          map:
+            on-click:
+              left: sh -c "riverctl set-focused-tags $((1 << ({id} - 1)))"
+              right: sh -c "riverctl toggle-focused-tags $((1 << ({id} -1)))"
+              middle: sh -c "riverctl toggle-view-tags $((1 << ({id} -1)))"
+            conditions:
+              state == focused:
+                map:
+                  <<: *river_base
+                  deco: {underline: {size: 3, color: cba6f7ff}}
+              id == 1 || id == 2 || id == 3:
+                map:
+                  <<: *river_base
+              ~occupied: {empty: {}}
+              state == invisible:
+                map:
+                  <<: *river_base
+  
+    - foreign-toplevel:
+        content:
+          map:
+            conditions:
+              ~activated: {empty: {}}
+              activated:
+                - string: {text: "{title}"}
+
+  center:
+    - clock:
+        date-format: "%a, %d.%m.%Y"
+        time-format: "%H:%M %Z"
+        content:
+          - string: {text: "{date}", right-margin: 5}
+          - string: {text: "  "}
+          - string: {text: "{time}"}
+
+  right:
+    - network:
+        name: eno1
+        content:
+          map:
+            conditions:
+              ~carrier: {empty: {}}
+              carrier: {string: {text: "󰌗 {ipv4}"}}
+    
+    - network:
+        name: wlo1
+        poll-interval: 1000
+        content:
+          map:
+            conditions:
+              ~carrier: {empty: {}}
+              carrier: {string: {text: "  {ssid}"}}
+
+    - pipewire:
+       anchors:
+          - mic: &mic_base
+              left-margin: 20
+              on-click: 
+                left: wpctl set-mute @DEFAULT_SOURCE@ toggle
+                wheel-up: wpctl set-volume @DEFAULT_SOURCE@ 5%+
+                wheel-down: wpctl set-volume @DEFAULT_SOURCE@ 5%-
+                middle: pavucontrol
+              conditions:
+                muted: {string: {text: "󰍭 {cubic_volume}%", foreground: f38ba8ff}}
+                ~muted: {string: {text: "󰍬 {cubic_volume}%"}}
+          - sink: &sink_base
+              on-click: 
+                left: wpctl set-mute @DEFAULT_SINK@ toggle
+                wheel-up: wpctl set-volume @DEFAULT_SINK@ 5%+
+                wheel-down: wpctl set-volume @DEFAULT_SINK@ 5%-
+                middle: pavucontrol
+              conditions:
+                muted: {string: {text: "󰖁 {cubic_volume}%", foreground: f38ba8ff}}
+                ~muted: {string: {text: "󰕾 {cubic_volume}%"}}
+       content:
+         map:
+           conditions:
+             type == "source":
+                map:
+                  <<: *mic_base
+             type == "sink":
+                map:
+                  <<: *sink_base
+
+    - backlight:
+        name: amdgpu_bl0
+        content:
+          list:
+            on-click:
+              wheel-up: light -A 5
+              wheel-down: light -U 5
+            items:
+              - string: {text: }
+              - string: {text: "{percent}%"}
+    
+    - battery:
+        name: BAT1
+        poll-interval: 30000
+        anchors:
+          discharging: &discharging
+            list:
+              items:
+                - ramp:
+                    tag: capacity
+                    items:
+                      - string: {text: , foreground: f38ba8ff}
+                      - string: {text: , foreground: f9e2afff}
+                      - string: {text: }
+                      - string: {text: }
+                      - string: {text: }
+                      - string: {text: }
+                      - string: {text: }
+                      - string: {text: }
+                      - string: {text: }
+                      - string: {text: , foreground: a6e3a1ff}
+                - string: {text: " {capacity}%"}
+        content:
+          map:
+            conditions:
+              state == unknown:
+                <<: *discharging
+              state == discharging:
+                <<: *discharging
+              state == charging:
+                - string: {text: , foreground: 89dcebff}
+                - string: {text: " {capacity}%"}
+              state == full:
+                - string: {text: , foreground: a6e3a1ff}
+                - string: {text: " {capacity}%"}

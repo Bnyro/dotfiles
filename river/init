@@ -122,7 +122,7 @@ riverctl focus-follows-cursor $mode
 exec ~/.config/scripts/wallpaper &
 
 # Status bar
-exec waybar &
+exec yambar &
 
 # Audio
 exec pipewire &
