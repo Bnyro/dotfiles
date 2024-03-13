@@ -119,6 +119,8 @@ bump() { # <package name> <new version> -[a(dopt)|o(rphan)|k(eepbranch)]
 }
 
 pr() { # <testing state> (<pr title>)
+	cd "$VOIDDIR"
+
 	local testingstate="${1:-YES}"
 	local title="${2:-`git show -s --format=%s`}"
 
